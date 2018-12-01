@@ -6,11 +6,16 @@ import java.io.Serializable;
 public class UserAddress implements Serializable {
 
     @Id
-    private Integer id;
+    private Long id;
+
     private String userAddress;
-    private Integer userId;
+
+    private Long userId;
+
     private String consignee;
+
     private String phoneNum;
+
     private String isDefault;
 
     @Override
@@ -25,10 +30,7 @@ public class UserAddress implements Serializable {
                 '}';
     }
 
-    public UserAddress() {
-    }
-
-    public UserAddress(Integer id, String userAddress, Integer userId, String consignee, String phoneNum, String isDefault) {
+    public UserAddress(Long id, String userAddress, Long userId, String consignee, String phoneNum, String isDefault) {
         this.id = id;
         this.userAddress = userAddress;
         this.userId = userId;
@@ -37,11 +39,15 @@ public class UserAddress implements Serializable {
         this.isDefault = isDefault;
     }
 
-    public Integer getId() {
+    public UserAddress() {
+        super();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,14 +56,14 @@ public class UserAddress implements Serializable {
     }
 
     public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+        this.userAddress = userAddress == null ? null : userAddress.trim();
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -66,7 +72,7 @@ public class UserAddress implements Serializable {
     }
 
     public void setConsignee(String consignee) {
-        this.consignee = consignee;
+        this.consignee = consignee == null ? null : consignee.trim();
     }
 
     public String getPhoneNum() {
@@ -74,7 +80,7 @@ public class UserAddress implements Serializable {
     }
 
     public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+        this.phoneNum = phoneNum == null ? null : phoneNum.trim();
     }
 
     public String getIsDefault() {
@@ -82,6 +88,6 @@ public class UserAddress implements Serializable {
     }
 
     public void setIsDefault(String isDefault) {
-        this.isDefault = isDefault;
+        this.isDefault = isDefault == null ? null : isDefault.trim();
     }
 }

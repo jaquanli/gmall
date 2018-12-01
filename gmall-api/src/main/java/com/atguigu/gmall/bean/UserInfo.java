@@ -1,28 +1,27 @@
 package com.atguigu.gmall.bean;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
 public class UserInfo implements Serializable{
 
     @Id
-    private Integer id;
-    @Column
+    private Long id;
+
     private String loginName;
-    @Column
+
     private String nickName;
-    @Column
+
     private String passwd;
-    @Column
+
     private String name;
-    @Column
+
     private String phoneNum;
-    @Column
+
     private String email;
-    @Column
+
     private String headImg;
-    @Column
+
     private String userLevel;
 
     @Override
@@ -40,11 +39,7 @@ public class UserInfo implements Serializable{
                 '}';
     }
 
-    //Mybatis不写默认构造器会报错
-    public UserInfo() {
-    }
-
-    public UserInfo(Integer id, String loginName, String nickName, String passwd, String name, String phoneNum, String email, String headImg, String userLevel) {
+    public UserInfo(Long id, String loginName, String nickName, String passwd, String name, String phoneNum, String email, String headImg, String userLevel) {
         this.id = id;
         this.loginName = loginName;
         this.nickName = nickName;
@@ -56,11 +51,15 @@ public class UserInfo implements Serializable{
         this.userLevel = userLevel;
     }
 
-    public Integer getId() {
+    public UserInfo() {
+        super();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,7 +68,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setLoginName(String loginName) {
-        this.loginName = loginName;
+        this.loginName = loginName == null ? null : loginName.trim();
     }
 
     public String getNickName() {
@@ -77,7 +76,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setNickName(String nickName) {
-        this.nickName = nickName;
+        this.nickName = nickName == null ? null : nickName.trim();
     }
 
     public String getPasswd() {
@@ -85,7 +84,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setPasswd(String passwd) {
-        this.passwd = passwd;
+        this.passwd = passwd == null ? null : passwd.trim();
     }
 
     public String getName() {
@@ -93,7 +92,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPhoneNum() {
@@ -101,7 +100,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+        this.phoneNum = phoneNum == null ? null : phoneNum.trim();
     }
 
     public String getEmail() {
@@ -109,7 +108,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? null : email.trim();
     }
 
     public String getHeadImg() {
@@ -117,7 +116,7 @@ public class UserInfo implements Serializable{
     }
 
     public void setHeadImg(String headImg) {
-        this.headImg = headImg;
+        this.headImg = headImg == null ? null : headImg.trim();
     }
 
     public String getUserLevel() {
@@ -125,6 +124,6 @@ public class UserInfo implements Serializable{
     }
 
     public void setUserLevel(String userLevel) {
-        this.userLevel = userLevel;
+        this.userLevel = userLevel == null ? null : userLevel.trim();
     }
 }
