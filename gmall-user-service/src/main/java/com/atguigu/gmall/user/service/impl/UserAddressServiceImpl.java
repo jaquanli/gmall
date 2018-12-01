@@ -6,12 +6,10 @@ import com.atguigu.gmall.bean.UserAddress;
 import com.atguigu.gmall.service.UserAddressService;
 import com.atguigu.gmall.user.mapper.UserAddressMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional
 public class UserAddressServiceImpl implements UserAddressService {
 
     @Autowired
@@ -26,7 +24,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     @Override
     public UserAddress queryUserAddressById(String id) {
 
-        return userAddressMapper.selectByPrimaryKey(Integer.parseInt(id));
+        return userAddressMapper.selectByPrimaryKey(Long.parseLong(id));
     }
 
     @Override
