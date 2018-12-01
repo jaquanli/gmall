@@ -29,7 +29,7 @@ public class UserInfoController {
         ResultEntity<UserInfo> resultEntity = new ResultEntity<>();
         try {
 
-            UserInfo userInfo = userInfoService.queryUserInfoById(Integer.parseInt(userInfoId));
+            UserInfo userInfo = userInfoService.queryUserInfoById(userInfoId);
 
             resultEntity.setResult(ResultEntity.SUCCESS);
             resultEntity.setDate(userInfo);
@@ -74,7 +74,7 @@ public class UserInfoController {
             //创建UserAddress对象用作封装数据
             UserInfo userInfo = new UserInfo();
             //将获得的参数封装到对象中
-            userInfo.setId(Integer.parseInt(userInfoId));
+            userInfo.setId(Long.parseLong(userInfoId));
             //调用服务进行删除
             userInfoService.removeUserInfoById(userInfo);
             //将成功的结果返回

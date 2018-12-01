@@ -60,7 +60,7 @@ public class UserAddressController {
             //创建UserAddress对象用作封装数据
             UserAddress userAddress = new UserAddress();
             //将获得的参数封装到对象中
-            userAddress.setId(new Integer(userAddressId));
+            userAddress.setId(Long.parseLong(userAddressId));
             //调用服务进行删除
             userAddressService.removeUserAddressById(userAddress);
             //将成功的结果返回
