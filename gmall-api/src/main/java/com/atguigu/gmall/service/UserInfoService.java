@@ -8,7 +8,7 @@ public interface UserInfoService {
 
     List<UserInfo> queryUserInfoAll();
 
-    UserInfo queryUserInfoById(Integer id);
+    UserInfo queryUserInfoById(String id);
 
     void updateUserInfoById(UserInfo userInfo);
 
