@@ -2,17 +2,23 @@ package com.atguigu.gmall.manager.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.atguigu.gmall.bean.BaseAttrInfo;
+import com.atguigu.gmall.bean.BaseAttrValue;
+import com.atguigu.gmall.bean.ResultEntity;
 import com.atguigu.gmall.manager.mapper.BaseAttrInfoMapper;
+import com.atguigu.gmall.manager.mapper.BaseAttrValueMapper;
 import com.atguigu.gmall.service.BaseAttrInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BaseAttrInfoServiceImpl implements BaseAttrInfoService {
 
     @Autowired
-    BaseAttrInfoMapper baseAttrInfoMapper;
+    private BaseAttrInfoMapper baseAttrInfoMapper;
+
+    @Autowired
+    private BaseAttrValueMapper baseAttrValueMapper;
 
     @Override
     public List<BaseAttrInfo> queryAttrInfoListByCatalog3Id(String catalog3Id) {
@@ -21,6 +27,152 @@ public class BaseAttrInfoServiceImpl implements BaseAttrInfoService {
 
         baseAttrInfo.setCatalog3Id(Long.parseLong(catalog3Id));
 
-        return baseAttrInfoMapper.select(baseAttrInfo);
+        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoMapper.select(baseAttrInfo);
+
+        for (BaseAttrInfo attrInfo : baseAttrInfos) {
+
+            Long attrId = attrInfo.getId();
+            BaseAttrValue attrValue = new BaseAttrValue();
+            attrValue.setAttrId(attrId);
+            List<BaseAttrValue> baseAttrValues = baseAttrValueMapper.select(attrValue);
+            attrInfo.setAttrValueList(baseAttrValues);
+        }
+        return baseAttrInfos;
+    }
+
+    /**
+     * 添加属性并添加属性值，根据传入的值是否为空做出不同的业务处理
+     * @param baseAttrInfo 属性信息对象
+     * @return 封装好成功和消息的结果
+     */
+    @Override
+    public ResultEntity<String> saveAttrInfoAndAttrValue(BaseAttrInfo baseAttrInfo) {
+
+        ResultEntity<String> resultEntity = new ResultEntity<>();
+
+        //创建封装消息的List对象
+        List<String> massageList = new ArrayList<>();
+
+        //获取id是否存在
+        Long attrInfoId = baseAttrInfo.getId();
+
+        //获取属性名
+        String attrName = baseAttrInfo.getAttrName();
+        //获取三级分类id
+        Long catalog3Id = baseAttrInfo.getCatalog3Id();
+
+        //获取添加的属性值list
+        List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
+
+        //不存在就插入
+        if (attrInfoId == null) {
+            //根据属性名和三级id信息的对象查询对象
+            BaseAttrInfo baseAttrInfoByName = baseAttrInfoMapper.selectBaseAttrInfoByAttrNameAndCatalog3Id(attrName,catalog3Id);
+
+            //如果查不到对象，进行插入
+            if (baseAttrInfoByName == null) {
+
+                //进行添加attrInfo
+                baseAttrInfoMapper.insertSelective(baseAttrInfo);
+                resultEntity.setMassage("属性：【" + attrName +"】添加成功");
+                resultEntity.setResult(ResultEntity.SUCCESS);
+
+                //获取添加后返回的id
+                Long infoId = baseAttrInfo.getId();
+
+                //调用添加属性值方法并返回结果
+                ResultEntity<String> saveValueResultEntity = saveBaseAttrValueByValueListAndInfoId(attrValueList, infoId);
+                resultEntity.setMassageList(saveValueResultEntity.getMassageList());
+                resultEntity.setResult(saveValueResultEntity.getResult());
+            }else {
+                //获取按属性名查出存在属性Id
+                Long infoByNameId = baseAttrInfoByName.getId();
+                //调用添加属性值方法并返回结果
+                ResultEntity<String> saveValueResultEntity = saveBaseAttrValueByValueListAndInfoId(attrValueList, infoByNameId);
+                resultEntity.setMassageList(saveValueResultEntity.getMassageList());
+                resultEntity.setResult(saveValueResultEntity.getResult());
+            }
+
+        }else {
+            //更新
+            //根据有属性名信息的对象查询对象
+            BaseAttrInfo baseAttrInfoByName = baseAttrInfoMapper.selectBaseAttrInfoByAttrNameAndCatalog3Id(attrName,catalog3Id);
+            if (baseAttrInfoByName == null) {
+                baseAttrInfoMapper.updateByPrimaryKeySelective(baseAttrInfo);
+                resultEntity.setResult(ResultEntity.SUCCESS);
+                resultEntity.setMassage("属性:【" + attrName + "】更新成功！");
+            }else {
+                //调用添加属性值方法并返回结果
+                ResultEntity<String> saveValueResultEntity = saveBaseAttrValueByValueListAndInfoId(attrValueList, attrInfoId);
+                resultEntity.setMassageList(saveValueResultEntity.getMassageList());
+                resultEntity.setResult(saveValueResultEntity.getResult());
+            }
+        }
+        return resultEntity;
+    }
+
+    /**
+     * 根据传入的属性值List和属性id添加到数据库，并根据名称判断是否为重复插入，
+     * @param baseAttrValueList 传入的属性值List
+     * @param infoId 属性id
+     * @return 封装好成功和消息的结果
+     */
+    @Override
+    public ResultEntity<String> saveBaseAttrValueByValueListAndInfoId(List<BaseAttrValue> baseAttrValueList,Long infoId){
+
+        ResultEntity<String> resultEntity = new ResultEntity<>();
+        List<String> massageList = new ArrayList<>();
+        //遍历出参数值
+        for (BaseAttrValue attrValue : baseAttrValueList) {
+            //获取每个value对象的id属性值
+            Long attrValueId = attrValue.getId();
+            //获取每个value对象的name属性值
+            String valueName = attrValue.getValueName();
+
+            //判断传入的id是否为空，不为空就按照id进行更新name，为空就添加属性
+            if (attrValueId == null) {
+                //根据name和属性id查询属性值对象
+                BaseAttrValue attrValueByValueName = baseAttrValueMapper.selectBaseAttrValueByValueNameAndAttrInfoId(valueName,infoId);
+                //如果查不到，就进行插入处理
+                if (attrValueByValueName == null){
+                    //把添加返回的值封装到每一个属性值对象
+                    attrValue.setAttrId(infoId);
+                    //进行往数据库添加属性值
+                    baseAttrValueMapper.insertSelective(attrValue);
+                    //操作成功
+                    resultEntity.setResult(ResultEntity.SUCCESS);
+                    massageList.add("属性值：【" +valueName + "】添加成功");
+                    resultEntity.setMassageList(massageList);
+                }else {
+
+                    //操作失败
+                    resultEntity.setResult(ResultEntity.FAILED);
+                    //将对应数据库存在的值封装到list
+                    massageList.add("属性值：【" + valueName + "】已存在请勿重复添加");
+                    //将数据库存在的值的信息通过消息返回
+                    resultEntity.setMassageList(massageList);
+                }
+            }else {
+
+
+
+
+                //根据name和属性id查询属性值对象
+                BaseAttrValue attrValueByValueName = baseAttrValueMapper.selectBaseAttrValueByValueNameAndAttrInfoId(valueName,infoId);
+                Long id = attrValueByValueName.getId();
+
+                //在这里如果为空就说明值发生了改变，进行更新,不为空说明值没有发生改变，就不更新
+                if (attrValueByValueName == null) {
+                    //进行更新
+                    baseAttrValueMapper.updateByPrimaryKeySelective(attrValue);
+                    resultEntity.setResult(ResultEntity.SUCCESS);
+                    massageList.add("编号：【"+ attrValueId + "】更新成功");
+                    resultEntity.setMassageList(massageList);
+                }else {
+
+                }
+            }
+        }
+        return resultEntity;
     }
 }

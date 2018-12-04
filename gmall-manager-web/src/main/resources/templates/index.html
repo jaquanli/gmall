@@ -6,6 +6,8 @@
     <script type="text/javascript" src="/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/easyui/easyloader.js"></script>
+    <script type="text/javascript" src="/webuploader/webuploader.js"></script>
+    <script type="text/javascript" src="/easyui/datagrid-detailview.js"></script>
     <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
 </head>
@@ -15,10 +17,10 @@
 <div data-options="region:'west',split:true,title:'管理'" style="width:200px;">
     <div class="easyui-accordion" style="width:195px;height:200px;">
         <div title="商品属性管理" data-options="iconCls:'icon-edit'" style="overflow:auto;padding:10px;font-weight:bold">
-            <a href="javascript:add_table('商品属性管理','attrListPage');" class="easyui-linkbutton">商品属性管理</a>
+            <a href="javascript:add_table('商品属性管理','go/attr/list/page');" class="easyui-linkbutton">商品属性管理</a>
         </div>
         <div title="SPU管理" data-options="iconCls:'icon-edit'" style="overflow:auto;padding:10px;font-weight:bold">
-            <a href="javascript:add_table('SPU管理','spuListPage');" class="easyui-linkbutton">SPU管理</a>
+            <a href="javascript:add_table('SPU管理','go/spu/list/page');" class="easyui-linkbutton">SPU管理</a>
         </div>
         <div title="仓库接口管理" data-options="iconCls:'icon-edit'" style="overflow:auto;padding:10px;font-weight:bold">
             <a href="javascript:add_table('仓库接口管理','storeListPage');" class="easyui-linkbutton">仓库接口管理</a>
