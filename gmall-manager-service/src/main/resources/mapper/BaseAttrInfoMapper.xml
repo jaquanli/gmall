@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.gmall.manager.mapper.BaseAttrInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.atguigu.gmall.bean.BaseAttrInfo" >
+        <constructor >
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="attr_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="catalog3_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="is_enabled" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <select id="selectBaseAttrInfoByAttrNameAndCatalog3Id" resultMap="BaseResultMap" >
+        SELECT
+               id,attr_name,
+               catalog3_id,is_enabled
+        FROM
+              base_attr_info
+        WHERE
+              attr_name = #{attrName}
+        AND
+              catalog3_id = #{catalog3Id}
+    </select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.gmall.manager.mapper.SpuSaleAttrValueMapper" >
+  <resultMap id="BaseResultMap" type="com.atguigu.gmall.bean.SpuSaleAttrValue" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="spu_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="sale_attr_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="sale_attr_value_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <insert id="insertSpuSaleAttrValueList">
+    insert into
+      spu_sale_attr_value (
+                           spu_id,
+                           sale_attr_id,
+                           sale_attr_value_name
+                           )
+    values
+           <foreach collection="spuSaleAttrValueList" item="spuSaleAttrValue" separator=",">
+             (
+              #{spuSaleAttrValue.spuId,jdbcType=BIGINT},
+              #{spuSaleAttrValue.saleAttrId,jdbcType=BIGINT},
+              #{spuSaleAttrValue.saleAttrValueName,jdbcType=VARCHAR}
+              )
+           </foreach>
+  </insert>
+</mapper>
