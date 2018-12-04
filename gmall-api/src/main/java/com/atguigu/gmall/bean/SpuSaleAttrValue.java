@@ -1,6 +1,11 @@
 package com.atguigu.gmall.bean;
 
-public class SpuSaleAttrValue {
+import javax.persistence.Id;
+import java.io.Serializable;
+
+public class SpuSaleAttrValue implements Serializable {
+
+    @Id
     private Long id;
 
     private Long spuId;
@@ -8,6 +13,7 @@ public class SpuSaleAttrValue {
     private Long saleAttrId;
 
     private String saleAttrValueName;
+
 
     public SpuSaleAttrValue(Long id, Long spuId, Long saleAttrId, String saleAttrValueName) {
         this.id = id;

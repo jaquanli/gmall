@@ -1,6 +1,12 @@
 package com.atguigu.gmall.bean;
 
-public class SpuSaleAttr {
+import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.List;
+
+public class SpuSaleAttr implements Serializable {
+
+    @Id
     private Long id;
 
     private Long spuId;
@@ -9,15 +15,37 @@ public class SpuSaleAttr {
 
     private String saleAttrName;
 
-    public SpuSaleAttr(Long id, Long spuId, Long saleAttrId, String saleAttrName) {
+    private List<SpuSaleAttrValue> spuSaleAttrValueList;
+
+    @Override
+    public String toString() {
+        return "SpuSaleAttr{" +
+                "id=" + id +
+                ", spuId=" + spuId +
+                ", saleAttrId=" + saleAttrId +
+                ", saleAttrName='" + saleAttrName + '\'' +
+                ", spuSaleAttrValueList=" + spuSaleAttrValueList +
+                '}';
+    }
+
+    public SpuSaleAttr(Long id, Long spuId, Long saleAttrId, String saleAttrName, List<SpuSaleAttrValue> spuSaleAttrValueList) {
         this.id = id;
         this.spuId = spuId;
         this.saleAttrId = saleAttrId;
         this.saleAttrName = saleAttrName;
+        this.spuSaleAttrValueList = spuSaleAttrValueList;
     }
 
     public SpuSaleAttr() {
         super();
+    }
+
+    public List<SpuSaleAttrValue> getSpuSaleAttrValueList() {
+        return spuSaleAttrValueList;
+    }
+
+    public void setSpuSaleAttrValueList(List<SpuSaleAttrValue> spuSaleAttrValueList) {
+        this.spuSaleAttrValueList = spuSaleAttrValueList;
     }
 
     public Long getId() {

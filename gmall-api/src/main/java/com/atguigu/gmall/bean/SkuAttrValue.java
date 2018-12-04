@@ -1,6 +1,11 @@
 package com.atguigu.gmall.bean;
 
-public class SkuAttrValue {
+import javax.persistence.Id;
+import java.io.Serializable;
+
+public class SkuAttrValue implements Serializable {
+
+    @Id
     private Long id;
 
     private Long attrId;
@@ -8,6 +13,16 @@ public class SkuAttrValue {
     private Long valueId;
 
     private Long skuId;
+
+    @Override
+    public String toString() {
+        return "SkuAttrValue{" +
+                "id=" + id +
+                ", attrId=" + attrId +
+                ", valueId=" + valueId +
+                ", skuId=" + skuId +
+                '}';
+    }
 
     public SkuAttrValue(Long id, Long attrId, Long valueId, Long skuId) {
         this.id = id;

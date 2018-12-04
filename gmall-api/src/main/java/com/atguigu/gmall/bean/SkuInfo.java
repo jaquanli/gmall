@@ -1,6 +1,15 @@
 package com.atguigu.gmall.bean;
 
-public class SkuInfo {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.List;
+
+public class SkuInfo implements Serializable {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     private Long spuId;
@@ -19,7 +28,31 @@ public class SkuInfo {
 
     private String skuDefaultImg;
 
-    public SkuInfo(Long id, Long spuId, Double price, String skuName, String skuDesc, Double weight, Long tmId, Long catalog3Id, String skuDefaultImg) {
+    private List<SkuImage> skuImageList;
+
+    private List<SkuAttrValue> skuAttrValueList;
+
+    private List<SkuSaleAttrValue> skuSaleAttrValueList;
+
+    @Override
+    public String toString() {
+        return "SkuInfo{" +
+                "id=" + id +
+                ", spuId=" + spuId +
+                ", price=" + price +
+                ", skuName='" + skuName + '\'' +
+                ", skuDesc='" + skuDesc + '\'' +
+                ", weight=" + weight +
+                ", tmId=" + tmId +
+                ", catalog3Id=" + catalog3Id +
+                ", skuDefaultImg='" + skuDefaultImg + '\'' +
+                ", skuImageList=" + skuImageList +
+                ", skuAttrValueList=" + skuAttrValueList +
+                ", skuSaleAttrValueList=" + skuSaleAttrValueList +
+                '}';
+    }
+
+    public SkuInfo(Long id, Long spuId, Double price, String skuName, String skuDesc, Double weight, Long tmId, Long catalog3Id, String skuDefaultImg, List<SkuImage> skuImageList, List<SkuAttrValue> skuAttrValueList, List<SkuSaleAttrValue> skuSaleAttrValueList) {
         this.id = id;
         this.spuId = spuId;
         this.price = price;
@@ -29,6 +62,34 @@ public class SkuInfo {
         this.tmId = tmId;
         this.catalog3Id = catalog3Id;
         this.skuDefaultImg = skuDefaultImg;
+        this.skuImageList = skuImageList;
+        this.skuAttrValueList = skuAttrValueList;
+        this.skuSaleAttrValueList = skuSaleAttrValueList;
+    }
+
+
+    public List<SkuImage> getSkuImageList() {
+        return skuImageList;
+    }
+
+    public void setSkuImageList(List<SkuImage> skuImageList) {
+        this.skuImageList = skuImageList;
+    }
+
+    public List<SkuAttrValue> getSkuAttrValueList() {
+        return skuAttrValueList;
+    }
+
+    public void setSkuAttrValueList(List<SkuAttrValue> skuAttrValueList) {
+        this.skuAttrValueList = skuAttrValueList;
+    }
+
+    public List<SkuSaleAttrValue> getSkuSaleAttrValueList() {
+        return skuSaleAttrValueList;
+    }
+
+    public void setSkuSaleAttrValueList(List<SkuSaleAttrValue> skuSaleAttrValueList) {
+        this.skuSaleAttrValueList = skuSaleAttrValueList;
     }
 
     public SkuInfo() {

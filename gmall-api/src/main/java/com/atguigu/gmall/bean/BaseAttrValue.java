@@ -1,6 +1,11 @@
 package com.atguigu.gmall.bean;
 
-public class BaseAttrValue {
+import javax.persistence.Id;
+import java.io.Serializable;
+
+public class BaseAttrValue implements Serializable {
+
+    @Id
     private Long id;
 
     private String valueName;
@@ -8,6 +13,16 @@ public class BaseAttrValue {
     private Long attrId;
 
     private String isEnabled;
+
+    @Override
+    public String toString() {
+        return "BaseAttrValue{" +
+                "id=" + id +
+                ", valueName='" + valueName + '\'' +
+                ", attrId=" + attrId +
+                ", isEnabled='" + isEnabled + '\'' +
+                '}';
+    }
 
     public BaseAttrValue(Long id, String valueName, Long attrId, String isEnabled) {
         this.id = id;

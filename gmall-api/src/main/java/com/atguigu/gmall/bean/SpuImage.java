@@ -1,6 +1,11 @@
 package com.atguigu.gmall.bean;
 
-public class SpuImage {
+import javax.persistence.Id;
+import java.io.Serializable;
+
+public class SpuImage implements Serializable {
+
+    @Id
     private Long id;
 
     private Long spuId;

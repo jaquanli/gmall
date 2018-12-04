@@ -1,6 +1,11 @@
 package com.atguigu.gmall.bean;
 
-public class BaseSaleAttr {
+import javax.persistence.Id;
+import java.io.Serializable;
+
+public class BaseSaleAttr implements Serializable {
+
+    @Id
     private Long id;
 
     private String name;
@@ -28,5 +33,13 @@ public class BaseSaleAttr {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "BaseSaleAttr{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

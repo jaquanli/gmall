@@ -1,6 +1,11 @@
 package com.atguigu.gmall.bean;
 
-public class SkuImage {
+import javax.persistence.Id;
+import java.io.Serializable;
+
+public class SkuImage implements Serializable {
+
+    @Id
     private Long id;
 
     private Long skuId;

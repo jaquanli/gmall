@@ -1,10 +1,15 @@
 package com.atguigu.gmall.bean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 用来统一返回结果的实体类
+ *
  * @param <T> 要返回的具体的数据类型
  */
-public class ResultEntity<T> {
+public class ResultEntity<T> implements Serializable {
 
     public static final String SUCCESS = "SUCCESS";
 
@@ -12,9 +17,13 @@ public class ResultEntity<T> {
 
     public static final String NO_MSG = "NO_MSG";
 
+    public static final String NO_DATA = "NO_DATA";
+
     private String result;//返回的结果，只有SUCCESS和FAILED两种
 
-    private String massage = NO_MSG;//返回的消息信息
+    private List<String> massageList;//返回的消息信息列表
+
+    private String massage;//单条消息
 
     private T date;//要返回的数据
 
@@ -22,10 +31,27 @@ public class ResultEntity<T> {
 
     }
 
-    public ResultEntity(String result, String massage, T date) {
+    public ResultEntity(String result, List<String> massageList, String massage, T date) {
         this.result = result;
+        this.massageList = massageList;
         this.massage = massage;
         this.date = date;
+    }
+
+    public List<String> getMassageList() {
+        return massageList;
+    }
+
+    public void setMassageList(List<String> massageList) {
+        this.massageList = massageList;
+    }
+
+    public String getMassage() {
+        return massage;
+    }
+
+    public void setMassage(String massage) {
+        this.massage = massage;
     }
 
     public static String getSUCCESS() {
@@ -48,13 +74,6 @@ public class ResultEntity<T> {
         this.result = result;
     }
 
-    public String getMassage() {
-        return massage;
-    }
-
-    public void setMassage(String massage) {
-        this.massage = massage;
-    }
 
     public T getDate() {
         return date;
@@ -68,6 +87,7 @@ public class ResultEntity<T> {
     public String toString() {
         return "ResultEntity{" +
                 "result='" + result + '\'' +
+                ", massageList=" + massageList +
                 ", massage='" + massage + '\'' +
                 ", date=" + date +
                 '}';

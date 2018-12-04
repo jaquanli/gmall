@@ -1,10 +1,14 @@
 package com.atguigu.gmall.bean;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.List;
 
 public class BaseAttrInfo implements Serializable {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -14,6 +18,8 @@ public class BaseAttrInfo implements Serializable {
 
     private String isEnabled;
 
+    private List<BaseAttrValue> attrValueList;
+
     public BaseAttrInfo(Long id, String attrName, Long catalog3Id, String isEnabled) {
         this.id = id;
         this.attrName = attrName;
@@ -21,8 +27,17 @@ public class BaseAttrInfo implements Serializable {
         this.isEnabled = isEnabled;
     }
 
+
     public BaseAttrInfo() {
         super();
+    }
+
+    public List<BaseAttrValue> getAttrValueList() {
+        return attrValueList;
+    }
+
+    public void setAttrValueList(List<BaseAttrValue> attrValueList) {
+        this.attrValueList = attrValueList;
     }
 
     public Long getId() {
@@ -55,5 +70,16 @@ public class BaseAttrInfo implements Serializable {
 
     public void setIsEnabled(String isEnabled) {
         this.isEnabled = isEnabled == null ? null : isEnabled.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "BaseAttrInfo{" +
+                "id=" + id +
+                ", attrName='" + attrName + '\'' +
+                ", catalog3Id=" + catalog3Id +
+                ", isEnabled='" + isEnabled + '\'' +
+                ", attrValueList=" + attrValueList +
+                '}';
     }
 }
