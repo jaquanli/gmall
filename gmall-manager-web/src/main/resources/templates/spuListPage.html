@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>spu管理</title>
+</head>
+<body>
+    <!--定义点击spu管理时，弹出页面的内容-->
+    <div class="easyui-panel" title="" data-options="border:true">
+        <!--下拉框-->
+        <div id="selectList">
+            <label for="ctg1ForSpuList">一级分类：</label>
+            <select id="ctg1ForSpuList" class="easyui-combobox" style="width:100px"
+                    data-options="
+                        valueField:'id',
+                        textField:'name',
+                        url:'/get/catalog1/list/all',
+                        onSelect:function(rec){
+                        $('#ctg2ForSpuList').combobox('clear');
+                        $('#ctg3ForSpuList').combobox('clear');
+                        $('#ctg2ForSpuList').combobox('reload','get/catalog2/list/catalog1Id?catalog1Id='+rec.id);
+                   }">
+            </select>
+            <label for="ctg2ForSpuList">二级分类：</label>
+            <select name="ctg2ForSpuList" id="ctg2ForSpuList" class="easyui-combobox" style="width:100px"
+                    data-options="
+                        valueField:'id',
+                        textField:'name',
+                        onSelect:function(rec){
+                        $('#ctg3ForSpuList').combobox('clear');
+                        $('#ctg3ForSpuList').combobox('reload','get/catalog3/list/catalog2Id?catalog2Id='+rec.id);
+                   }">
+            </select>
+            <label for="ctg3ForSpuList">三级分类：</label>
+            <select name="ctg3ForSpuList" id="ctg3ForSpuList" class="easyui-combobox" style="width:100px"
+                    data-options="
+                        valueField:'id',
+                        textField:'name',
+                        onSelect:function(rec){
+                       $('#spulist_dg').datagrid({url:'get/spu/list/catalog3Id?catalog3Id='+rec.id});
+                   }">
+            </select>
+            <!--刷新按钮-->
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="javascript:reloadSpuList()">刷新列表</a>
+        </div>
+        <!-----------------列表 ----------------------------->
+        <table id="spulist_dg" class="easyui-datagrid" title="spu列表"
+               data-options="singleSelect:true,method:'get' ,toolbar:'#spulist_tb'">
+            <!-----------------列表的工具栏----------------------------->
+            <div id="spulist_tb" style="padding:5px;height:auto">
+                <div style="margin-bottom:5px">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSpuInfo()">
+                        添加
+                    </a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSpuInfo()">
+                        编辑
+                    </a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true">
+                        删除
+                    </a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addSkuInfo()">
+                        增加sku
+                    </a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="showSkuInfoList()">
+                        sku列表
+                    </a>
+                </div>
+            </div>
+            <thead>
+            <tr>
+                <th data-options="field:'id'" width="10%">商品id</th>
+                <th data-options="field:'spuName'" width="30%">商品名称</th>
+                <th data-options="field:'description'" width="60%">商品描述</th>
+            </tr>
+            </thead>
+
+        </table>
+
+    </div>
+    <!--引入点击添加时的弹出框页面-->
+    <div th:include="spuInfoPage"></div>
+
+    <div th:include="skuInfoPage"></div>
+
+    <div th:include="skuListPage"></div>
+<script language="JavaScript">
+
+    //点击sku列表
+    function showSkuInfoList() {
+
+        alert("显示是sku列表");
+        var spuInfoRow = $("#spulist_dg").datagrid('getSelected');
+
+        if (!spuInfoRow){
+            $.messager.alert('警告','请选择一个spu！','warning');
+            return;
+        }
+        //初始化sku列表页面
+        initSkuListDlg(spuInfoRow.id);
+        //打开sku列表对话框
+        $("#skulist_dlg").dialog("open");
+
+    }
+
+    //点击增加sku，显示增加sku对话框
+    function addSkuInfo() {
+
+        var catalog3Id =checkSelectLevel3Result();
+        //catalog3Id = 61;
+        //判断是否为空
+        if (!catalog3Id){
+            return;
+        }
+
+        var spuInfoRow = $("#spulist_dg").datagrid('getSelected');
+
+        if (!spuInfoRow){
+            $.messager.alert('警告','请选择一个spu！','warning');
+            return;
+        }
+        console.log(spuInfoRow.id,catalog3Id);
+        console.log(spuInfoRow);
+        //初始化编辑sku对话框
+        initSkuInfoDlg(spuInfoRow.id,spuInfoRow,catalog3Id);
+
+        $("#sku_dlg").dialog("open");
+    }
+
+
+
+    //编辑spu
+    function editSpuInfo() {
+        //有空就做
+        alert("没做！");
+        return;
+    }
+
+    //添加spu
+    function addSpuInfo() {
+        //alert("添加spu");
+
+        var catalog3Id =checkSelectLevel3Result();
+        catalog3Id = 61;
+        //判断是否为空
+        if (!catalog3Id){
+            return;
+        }
+        //alert("打开spu销售属性对话框");
+        //打开spu销售属性对话框
+        $("#spu_dlg").dialog('open');
+        //初始化spu编辑的对话框
+        initSpuInfoDlg();
+
+        
+    }
+    
+    
+    //加载spu列表数据
+    function reloadSpuList() {
+        var catalog3Id =checkSelectLevel3Result();
+        catalog3Id = 61;
+        //判断是否为空
+        if (!catalog3Id){
+            return;
+        }
+        //查找到easyUI发送请求并将结果返回给页面
+        $('#spulist_dg').datagrid({url:'get/spu/list/catalog3Id?catalog3Id='+catalog3Id});
+    }
+
+    //定义一个检查函数，便于调用
+    function checkSelectLevel3Result() {
+        //获取选择的三级分类id
+        var catalog3Id = $("#ctg3ForSpuList").combobox("getValue");
+
+        //为了方便测试添加
+        //catalog3Id = 61;
+
+        //如果三级分类未选择，则给出提示消息
+        if (!catalog3Id){
+            $.messager.alert('提示消息', '必须选择一个三级分类','warning');
+        }
+        return catalog3Id;
+    }
+</script>
+
+</body>
+</html>
