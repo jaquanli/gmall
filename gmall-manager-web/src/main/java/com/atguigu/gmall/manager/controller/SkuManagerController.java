@@ -35,27 +35,21 @@ public class SkuManagerController {
     @RequestMapping("skuInfoListBySpu")
     public List<SkuInfo> skuInfoListBySpu(@RequestParam("spuId") String spuInfoId){
 
-        List<SkuInfo> skuInfos = skuService.querySkuInfoListBySpuInfoId(spuInfoId);
-
-        return skuInfos;
+        return skuService.querySkuInfoListBySpuInfoId(spuInfoId);
     }
 
     @ResponseBody
     @RequestMapping("attrInfoList")
     public List<BaseAttrInfo> attrInfoList(@RequestParam("catalog3Id") String catalog3Id){
 
-        List<BaseAttrInfo> baseAttrInfos = baseAttrInfoService.queryAttrInfoListByCatalog3Id(catalog3Id);
-
-        return baseAttrInfos;
+        return baseAttrInfoService.queryAttrInfoListByCatalog3Id(catalog3Id);
     }
 
     @ResponseBody
     @RequestMapping("spuSaleAttrList")
     public  List<SpuSaleAttr> spuSaleAttrList(@RequestParam("spuId") String spuId){
 
-        List<SpuSaleAttr> spuSaleAttrs = spuSaleAttrService.queryspuSaleAttrListBySpuId(spuId);
-
-        return  spuSaleAttrs;
+        return spuSaleAttrService.queryspuSaleAttrListBySpuId(spuId);
 
     }
 
@@ -63,9 +57,7 @@ public class SkuManagerController {
     @RequestMapping("spuImageList")
     public List<SpuImage> spuImageList(@RequestParam("spuId") String spuId){
 
-        List<SpuImage> spuImages  = spuImageService.querySpuImageListBySpuId(spuId);
-
-        return spuImages;
+        return spuImageService.querySpuImageListBySpuId(spuId);
 
     }
 

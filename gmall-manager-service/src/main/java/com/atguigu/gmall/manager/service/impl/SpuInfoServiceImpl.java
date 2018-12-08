@@ -6,6 +6,8 @@ import com.atguigu.gmall.manager.mapper.*;
 import com.atguigu.gmall.service.SpuInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import tk.mybatis.mapper.entity.Example;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,5 +84,17 @@ public class SpuInfoServiceImpl implements SpuInfoService {
             spuImageMapper.insertSelective(spuImage);
         }
         return resultEntity;
+    }
+
+    @Override
+    public SpuInfo querySpuInfoById(String spuId) {
+
+        SpuInfo spuInfo = spuInfoMapper.selectByPrimaryKey(Long.parseLong(spuId));
+        Example example = new Example(SpuSaleAttr.class);
+        example.createCriteria().andEqualTo("spuId",spuId);
+        List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectByExample(example);
+        spuInfo.setSpuSaleAttrList(spuSaleAttrList);
+
+        return spuInfo;
     }
 }

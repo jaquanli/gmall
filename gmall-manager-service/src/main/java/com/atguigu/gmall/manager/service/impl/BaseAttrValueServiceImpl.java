@@ -21,8 +21,7 @@ public class BaseAttrValueServiceImpl implements BaseAttrValueService {
 
         baseAttrValue.setAttrId(Long.parseLong(attrInfoId));
 
-        List<BaseAttrValue> select = baseAttrValueMapper.select(baseAttrValue);
-        return select;
+        return baseAttrValueMapper.select(baseAttrValue);
     }
 
     @Override

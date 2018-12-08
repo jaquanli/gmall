@@ -36,27 +36,22 @@ public class AttrManagerController {
     @RequestMapping("get/catalog1/list/all")
     public List<BaseCatalog1> getCatalog1ListAll(){
 
-        List<BaseCatalog1> baseCatalog1List = baseCatalog1Service.queryCatalog1List();
 
-        return  baseCatalog1List;
+        return baseCatalog1Service.queryCatalog1List();
     }
 
     @ResponseBody
     @RequestMapping("get/catalog2/list/catalog1Id")
     public List<BaseCatalog2> getCatalog2ListByCatalog1Id(@RequestParam("catalog1Id") String catalog1Id){
 
-        List<BaseCatalog2> baseCatalog2List =  baseCatalog2Service.queryCatalog2ListByCatalog1Id(catalog1Id);
-
-        return  baseCatalog2List;
+        return baseCatalog2Service.queryCatalog2ListByCatalog1Id(catalog1Id);
     }
 
     @ResponseBody
     @RequestMapping("get/catalog3/list/catalog2Id")
     public List<BaseCatalog3> getCatalog3ListByCatalog2Id(@RequestParam("catalog2Id") String catalog2Id){
 
-        List<BaseCatalog3> baseCatalog3List = baseCatalog3Service.queryCatalog3ListByCatalog2Id(catalog2Id);
-
-        return baseCatalog3List;
+        return baseCatalog3Service.queryCatalog3ListByCatalog2Id(catalog2Id);
 
     }
 
@@ -64,9 +59,7 @@ public class AttrManagerController {
     @RequestMapping("get/attr/info/list/catalog3Id")
     public List<BaseAttrInfo> getAttrInfoListByCatalog3Id(@RequestParam("catalog3Id") String catalog3Id) {
 
-        List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoService.queryAttrInfoListByCatalog3Id(catalog3Id);
-
-        return  baseAttrInfoList;
+        return baseAttrInfoService.queryAttrInfoListByCatalog3Id(catalog3Id);
 
     }
 
@@ -81,9 +74,7 @@ public class AttrManagerController {
     @RequestMapping("get/attr/value/list/attrInfoId")
     public List<BaseAttrValue> getBaseAttrValueListByAttrInfoId(@RequestParam("attrInfoId") String attrInfoId){
 
-        List<BaseAttrValue> baseAttrValueList = baseAttrValueService.queryBaseAttrValueListByAttrInfoId(attrInfoId);
-
-        return  baseAttrValueList;
+        return baseAttrValueService.queryBaseAttrValueListByAttrInfoId(attrInfoId);
     }
 
 }

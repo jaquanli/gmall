@@ -37,4 +37,10 @@ public class SpuSaleAttrServiceImpl implements SpuSaleAttrService {
         }
         return spuSaleAttrs;
     }
+
+    @Override
+    public List<SpuSaleAttr> querySpuSaleAttrListCheckBySku(Long spuId,Long skuId) {
+
+        return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(spuId,skuId);
+    }
 }

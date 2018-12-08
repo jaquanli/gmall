@@ -57,6 +57,7 @@ public class SpuManagerController {
     public String fileUpload(@RequestParam("file") MultipartFile multipartFile){
 
         if (multipartFile != null) {
+            System.err.println(fileUrl);
             return GmallUploadUtil.fileUpload(multipartFile, fileUrl);
         }
         return  null;

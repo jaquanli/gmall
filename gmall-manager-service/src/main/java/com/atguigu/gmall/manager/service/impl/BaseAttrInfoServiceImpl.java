@@ -168,8 +168,6 @@ public class BaseAttrInfoServiceImpl implements BaseAttrInfoService {
                     resultEntity.setResult(ResultEntity.SUCCESS);
                     massageList.add("编号：【"+ attrValueId + "】更新成功");
                     resultEntity.setMassageList(massageList);
-                }else {
-
                 }
             }
         }
