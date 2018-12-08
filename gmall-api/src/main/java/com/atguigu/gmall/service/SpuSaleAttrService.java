@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SpuSaleAttrService {
     List<SpuSaleAttr> queryspuSaleAttrListBySpuId(String spuId);
+
+    List<SpuSaleAttr> querySpuSaleAttrListCheckBySku(Long spuId,Long skuId);
 }
