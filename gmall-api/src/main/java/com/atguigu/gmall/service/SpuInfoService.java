@@ -12,4 +12,6 @@ public interface SpuInfoService {
     List<BaseSaleAttr> queryBaseSaleAttrList();
 
     ResultEntity<String> saveSpuInfo(SpuInfo spuInfo);
+
+    SpuInfo querySpuInfoById(String spuId);
 }
