@@ -61,6 +61,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--在common引入fastJson，因为在service层需要用到Redis缓存时，需要用到fastJson进行转换-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.gitee.reger</groupId>
