@@ -1,6 +1,7 @@
 package com.atguigu.gmall.bean;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 public class SpuSaleAttrValue implements Serializable {
@@ -14,16 +15,38 @@ public class SpuSaleAttrValue implements Serializable {
 
     private String saleAttrValueName;
 
+    @Transient
+    private String isCheck;
 
-    public SpuSaleAttrValue(Long id, Long spuId, Long saleAttrId, String saleAttrValueName) {
+    public SpuSaleAttrValue(Long id, Long spuId, Long saleAttrId, String saleAttrValueName, String isCheck) {
         this.id = id;
         this.spuId = spuId;
         this.saleAttrId = saleAttrId;
         this.saleAttrValueName = saleAttrValueName;
+        this.isCheck = isCheck;
     }
 
     public SpuSaleAttrValue() {
         super();
+    }
+
+    @Override
+    public String toString() {
+        return "SpuSaleAttrValue{" +
+                "id=" + id +
+                ", spuId=" + spuId +
+                ", saleAttrId=" + saleAttrId +
+                ", saleAttrValueName='" + saleAttrValueName + '\'' +
+                ", isCheck='" + isCheck + '\'' +
+                '}';
+    }
+
+    public String getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(String isCheck) {
+        this.isCheck = isCheck;
     }
 
     public Long getId() {
