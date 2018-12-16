@@ -1,5 +1,8 @@
 package com.atguigu.gmall.bean;
 
+/**
+ * 暂用不着
+ */
 public class BaseTrademark {
     private Long id;
 

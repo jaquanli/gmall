@@ -3,7 +3,7 @@ package com.atguigu.gmall.user.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.atguigu.gmall.bean.ResultEntity;
 import com.atguigu.gmall.bean.UserAddress;
-import com.atguigu.gmall.service.UserAddressService;
+import com.atguigu.gmall.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,18 +14,18 @@ import java.util.List;
 public class UserAddressController {
 
     @Reference
-    private UserAddressService userAddressService;
+    private UserService userService;
 
     @RequestMapping("get/user/address/list")
     public List<UserAddress> getUserAddressList() {
 
-        return userAddressService.queryUserAddressList();
+        return userService.queryUserAddressList();
     }
 
     @RequestMapping("get/user/address/{id}")
     public UserAddress getUserAddressById(@PathVariable("id") String id) {
 
-        return userAddressService.queryUserAddressById(id);
+        return userService.queryUserAddressById(id);
     }
 
     @RequestMapping("modify/user/address")
@@ -35,7 +35,7 @@ public class UserAddressController {
         //进行try-catch
         try {
             //调用服务更新
-            userAddressService.updateUserAddressById(userAddress);
+            userService.updateUserAddressById(userAddress);
             //将成功的结果返回
             resultEntity.setResult(ResultEntity.SUCCESS);
             //返回消息
@@ -62,7 +62,7 @@ public class UserAddressController {
             //将获得的参数封装到对象中
             userAddress.setId(Long.parseLong(userAddressId));
             //调用服务进行删除
-            userAddressService.removeUserAddressById(userAddress);
+            userService.removeUserAddressById(userAddress);
             //将成功的结果返回
             resultEntity.setResult(ResultEntity.SUCCESS);
             //将成功的消息封装到结果
@@ -82,7 +82,7 @@ public class UserAddressController {
     public ResultEntity<String> addUserAddress(UserAddress userAddress){
         ResultEntity<String> resultEntity = new ResultEntity<>();
         try {
-            userAddressService.saveUserAddress(userAddress);
+            userService.saveUserAddress(userAddress);
             //将成功的结果返回
             resultEntity.setResult(ResultEntity.SUCCESS);
             //将成功的消息封装到结果

@@ -1,7 +1,9 @@
 package com.atguigu.gmall.bean;
 
 import java.util.Date;
-
+/**
+ * 暂用不着
+ */
 public class WareOrderTask {
     private Long id;
 

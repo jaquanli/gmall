@@ -4,24 +4,23 @@ package com.atguigu.gmall.user.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.atguigu.gmall.bean.ResultEntity;
 import com.atguigu.gmall.bean.UserInfo;
-import com.atguigu.gmall.service.UserInfoService;
+import com.atguigu.gmall.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class UserInfoController {
 
     @Reference
-    private UserInfoService userInfoService;
+    private UserService userService;
 
     @RequestMapping("get/user/info/list")
     public List<UserInfo> getUserInfoList() {
 
-        return userInfoService.queryUserInfoAll();
+        return userService.queryUserInfoAll();
     }
 
     @RequestMapping("get/user/info/{userInfoId}")
@@ -30,7 +29,7 @@ public class UserInfoController {
         ResultEntity<UserInfo> resultEntity = new ResultEntity<>();
         try {
 
-            UserInfo userInfo = userInfoService.queryUserInfoById(userInfoId);
+            UserInfo userInfo = userService.queryUserInfoById(userInfoId);
 
             resultEntity.setResult(ResultEntity.SUCCESS);
             resultEntity.setDate(userInfo);
@@ -50,7 +49,7 @@ public class UserInfoController {
         //进行try-catch
         try {
             //调用服务更新
-            userInfoService.updateUserInfoById(userInfo);
+            userService.updateUserInfoById(userInfo);
             //将成功的结果返回
             resultEntity.setResult(ResultEntity.SUCCESS);
             //返回消息
@@ -77,7 +76,7 @@ public class UserInfoController {
             //将获得的参数封装到对象中
             userInfo.setId(Long.parseLong(userInfoId));
             //调用服务进行删除
-            userInfoService.removeUserInfoById(userInfo);
+            userService.removeUserInfoById(userInfo);
             //将成功的结果返回
             resultEntity.setResult(ResultEntity.SUCCESS);
             //将成功的消息封装到结果
@@ -97,7 +96,7 @@ public class UserInfoController {
     public ResultEntity<String> addUserInfo(UserInfo userInfo) {
         ResultEntity<String> resultEntity = new ResultEntity<>();
         try {
-            userInfoService.saveUserInfo(userInfo);
+            userService.saveUserInfo(userInfo);
             //将成功的结果返回
             resultEntity.setResult(ResultEntity.SUCCESS);
             //将成功的消息封装到结果

@@ -1,9 +1,17 @@
 package com.atguigu.gmall.bean;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-public class OrderInfo {
+public class OrderInfo implements Serializable {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     private String consignee;
@@ -40,7 +48,34 @@ public class OrderInfo {
 
     private String consigneeTel;
 
-    public OrderInfo(Long id, String consignee, BigDecimal totalAmount, String orderStatus, Long userId, String paymentWay, Date expectDeliveryTime, String deliveryAddress, String orderComment, String outTradeNo, String tradeBody, Date createTime, Date expireTime, String wareStatus, Long parentOrderId, String processStatus, String trackingNo, String consigneeTel) {
+    private List<OrderDetail> orderDetailList;
+
+    @Override
+    public String toString() {
+        return "OrderInfo{" +
+                "id=" + id +
+                ", consignee='" + consignee + '\'' +
+                ", totalAmount=" + totalAmount +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", userId=" + userId +
+                ", paymentWay='" + paymentWay + '\'' +
+                ", expectDeliveryTime=" + expectDeliveryTime +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", orderComment='" + orderComment + '\'' +
+                ", outTradeNo='" + outTradeNo + '\'' +
+                ", tradeBody='" + tradeBody + '\'' +
+                ", createTime=" + createTime +
+                ", expireTime=" + expireTime +
+                ", wareStatus='" + wareStatus + '\'' +
+                ", parentOrderId=" + parentOrderId +
+                ", processStatus='" + processStatus + '\'' +
+                ", trackingNo='" + trackingNo + '\'' +
+                ", consigneeTel='" + consigneeTel + '\'' +
+                ", orderDetailList=" + orderDetailList +
+                '}';
+    }
+
+    public OrderInfo(Long id, String consignee, BigDecimal totalAmount, String orderStatus, Long userId, String paymentWay, Date expectDeliveryTime, String deliveryAddress, String orderComment, String outTradeNo, String tradeBody, Date createTime, Date expireTime, String wareStatus, Long parentOrderId, String processStatus, String trackingNo, String consigneeTel, List<OrderDetail> orderDetailList) {
         this.id = id;
         this.consignee = consignee;
         this.totalAmount = totalAmount;
@@ -59,10 +94,19 @@ public class OrderInfo {
         this.processStatus = processStatus;
         this.trackingNo = trackingNo;
         this.consigneeTel = consigneeTel;
+        this.orderDetailList = orderDetailList;
     }
 
     public OrderInfo() {
         super();
+    }
+
+    public List<OrderDetail> getOrderDetailList() {
+        return orderDetailList;
+    }
+
+    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+        this.orderDetailList = orderDetailList;
     }
 
     public Long getId() {

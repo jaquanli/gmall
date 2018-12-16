@@ -4,6 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class SkuInfo implements Serializable {
@@ -14,7 +15,7 @@ public class SkuInfo implements Serializable {
 
     private Long spuId;
 
-    private Double price;
+    private BigDecimal price;
 
     private String skuName;
 
@@ -52,8 +53,7 @@ public class SkuInfo implements Serializable {
                 '}';
     }
 
-    public SkuInfo(Long id, Long spuId, Double price, String skuName, String skuDesc, Double weight, Long tmId, Long catalog3Id, String skuDefaultImg, List<SkuImage> skuImageList, List<SkuAttrValue> skuAttrValueList, List<SkuSaleAttrValue> skuSaleAttrValueList) {
-        this.id = id;
+    public SkuInfo(Long spuId, BigDecimal price, String skuName, String skuDesc, Double weight, Long tmId, Long catalog3Id, String skuDefaultImg, List<SkuImage> skuImageList, List<SkuAttrValue> skuAttrValueList, List<SkuSaleAttrValue> skuSaleAttrValueList) {
         this.spuId = spuId;
         this.price = price;
         this.skuName = skuName;
@@ -66,7 +66,6 @@ public class SkuInfo implements Serializable {
         this.skuAttrValueList = skuAttrValueList;
         this.skuSaleAttrValueList = skuSaleAttrValueList;
     }
-
 
     public List<SkuImage> getSkuImageList() {
         return skuImageList;
@@ -92,6 +91,14 @@ public class SkuInfo implements Serializable {
         this.skuSaleAttrValueList = skuSaleAttrValueList;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public SkuInfo() {
         super();
     }
@@ -110,14 +117,6 @@ public class SkuInfo implements Serializable {
 
     public void setSpuId(Long spuId) {
         this.spuId = spuId;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public String getSkuName() {

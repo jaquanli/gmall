@@ -10,7 +10,7 @@ import java.util.List;
 public class SkuLsInfo implements Serializable {
 
 
-    private String id;
+    private Long id;
 
     private BigDecimal price;
 
@@ -18,7 +18,7 @@ public class SkuLsInfo implements Serializable {
 
     private String skuDesc;
 
-    private String catalog3Id;
+    private Long catalog3Id;
 
     private String skuDefaultImg;
 
@@ -29,7 +29,7 @@ public class SkuLsInfo implements Serializable {
     public SkuLsInfo() {
     }
 
-    public SkuLsInfo(String id, BigDecimal price, String skuName, String skuDesc, String catalog3Id, String skuDefaultImg, Long hotScore, List<SkuLsAttrValue> skuAttrValueList) {
+    public SkuLsInfo(Long id, BigDecimal price, String skuName, String skuDesc, Long catalog3Id, String skuDefaultImg, Long hotScore, List<SkuLsAttrValue> skuAttrValueList) {
         this.id = id;
         this.price = price;
         this.skuName = skuName;
@@ -43,23 +43,31 @@ public class SkuLsInfo implements Serializable {
     @Override
     public String toString() {
         return "SkuLsInfo{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", price=" + price +
                 ", skuName='" + skuName + '\'' +
                 ", skuDesc='" + skuDesc + '\'' +
-                ", catalog3Id='" + catalog3Id + '\'' +
+                ", catalog3Id=" + catalog3Id +
                 ", skuDefaultImg='" + skuDefaultImg + '\'' +
                 ", hotScore=" + hotScore +
                 ", skuAttrValueList=" + skuAttrValueList +
                 '}';
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCatalog3Id() {
+        return catalog3Id;
+    }
+
+    public void setCatalog3Id(Long catalog3Id) {
+        this.catalog3Id = catalog3Id;
     }
 
     public BigDecimal getPrice() {
@@ -84,14 +92,6 @@ public class SkuLsInfo implements Serializable {
 
     public void setSkuDesc(String skuDesc) {
         this.skuDesc = skuDesc;
-    }
-
-    public String getCatalog3Id() {
-        return catalog3Id;
-    }
-
-    public void setCatalog3Id(String catalog3Id) {
-        this.catalog3Id = catalog3Id;
     }
 
     public String getSkuDefaultImg() {

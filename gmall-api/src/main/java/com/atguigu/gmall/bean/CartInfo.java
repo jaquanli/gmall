@@ -1,8 +1,15 @@
 package com.atguigu.gmall.bean;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class CartInfo {
+public class CartInfo implements Serializable {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     private Long userId;
@@ -19,11 +26,27 @@ public class CartInfo {
 
     private BigDecimal skuPrice;
 
-    private BigDecimal skuNum;
+    private Integer skuNum;
 
     private String skuName;
 
-    public CartInfo(Long id, Long userId, Long skuId, BigDecimal cartPrice, Integer quantity, String imgUrl, String isChecked, BigDecimal skuPrice, BigDecimal skuNum, String skuName) {
+    @Override
+    public String toString() {
+        return "CartInfo{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", skuId=" + skuId +
+                ", cartPrice=" + cartPrice +
+                ", quantity=" + quantity +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", isChecked='" + isChecked + '\'' +
+                ", skuPrice=" + skuPrice +
+                ", skuNum=" + skuNum +
+                ", skuName='" + skuName + '\'' +
+                '}';
+    }
+
+    public CartInfo(Long id, Long userId, Long skuId, BigDecimal cartPrice, Integer quantity, String imgUrl, String isChecked, BigDecimal skuPrice, Integer skuNum, String skuName) {
         this.id = id;
         this.userId = userId;
         this.skuId = skuId;
@@ -104,11 +127,11 @@ public class CartInfo {
         this.skuPrice = skuPrice;
     }
 
-    public BigDecimal getSkuNum() {
+    public Integer getSkuNum() {
         return skuNum;
     }
 
-    public void setSkuNum(BigDecimal skuNum) {
+    public void setSkuNum(Integer skuNum) {
         this.skuNum = skuNum;
     }
 

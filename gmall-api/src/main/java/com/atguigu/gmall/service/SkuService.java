@@ -12,4 +12,6 @@ public interface SkuService {
     SkuInfo querySkuInfoById(String skuId);
 
     List<SkuInfo> querySkuInfoAndSkuSaleSttrValueBySpuId(Long spuId);
+
+    List<SkuInfo> queryskuInfoAndSkuAttrValueByCatalog3Id(Long catalog3Id);
 }

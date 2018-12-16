@@ -9,29 +9,27 @@ import java.io.Serializable;
 public class SkuLsAttrValue implements Serializable {
 
 
-    private String valueId;
+    private Long valueId;
 
     public SkuLsAttrValue() {
     }
 
-    public SkuLsAttrValue(String valueId) {
+    public SkuLsAttrValue(Long valueId) {
+        this.valueId = valueId;
+    }
+
+    public Long getValueId() {
+        return valueId;
+    }
+
+    public void setValueId(Long valueId) {
         this.valueId = valueId;
     }
 
     @Override
     public String toString() {
         return "SkuLsAttrValue{" +
-                "valueId='" + valueId + '\'' +
+                "valueId=" + valueId +
                 '}';
     }
-
-    public String getValueId() {
-        return valueId;
-    }
-
-    public void setValueId(String valueId) {
-        this.valueId = valueId;
-    }
-
-
 }

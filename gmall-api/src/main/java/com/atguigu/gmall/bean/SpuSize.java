@@ -1,5 +1,7 @@
 package com.atguigu.gmall.bean;
-
+/**
+ * 暂用不着
+ */
 public class SpuSize {
     private Long id;
 
