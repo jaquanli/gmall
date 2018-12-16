@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.gmall.cart.mapper.CartInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.atguigu.gmall.bean.CartInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="sku_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="cart_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="img_url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="is_checked" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sku_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sku_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sku_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteCartInfoByIds">
+    delete from cart_info
+    where
+          id in
+          <foreach collection="checkedCartIdList" item="checkedCartId" open="(" close=")" separator=",">
+            #{checkedCartId,jdbcType=BIGINT}
+          </foreach>
+  </delete>
+</mapper>
