@@ -18,6 +18,7 @@ import com.atguigu.gmall.utils.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
+import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -218,7 +219,6 @@ public class OrderServiceImpl implements OrderService {
 
         return orderReal;
     }
-
     /**
      * 保存订单到数据库
      *
@@ -244,5 +244,28 @@ public class OrderServiceImpl implements OrderService {
         }
 
     }
+
+    /**
+     * 根据outTradeNo获取订单信息
+     * @param outTradeNo 订单全网外部编号
+     * @return 订单信息
+     */
+    @Override
+    public OrderInfo getOrderByOutTradeNo(String outTradeNo) {
+
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setOutTradeNo(outTradeNo);
+        OrderInfo orderInfoDB = orderInfoMapper.selectOne(orderInfo);
+
+
+        Example example = new Example(OrderDetail.class);
+        example.createCriteria().andEqualTo(orderInfoDB.getId());
+        List<OrderDetail> orderDetailList = orderDetailMapper.selectByExample(example);
+
+        orderInfoDB.setOrderDetailList(orderDetailList);
+
+        return orderInfoDB;
+    }
+
 
 }

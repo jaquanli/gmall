@@ -10,4 +10,6 @@ public interface OrderService {
     void addTempTradeCode(String userId,String tradeCode);
 
     OrderInfo creatOrder(String userId,OrderInfo orderInfo);
+
+    OrderInfo getOrderByOutTradeNo(String outTradeNo);
 }

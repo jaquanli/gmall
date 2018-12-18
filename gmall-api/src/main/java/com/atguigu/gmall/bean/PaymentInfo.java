@@ -1,9 +1,13 @@
 package com.atguigu.gmall.bean;
 
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PaymentInfo {
+public class PaymentInfo implements Serializable {
+
+    @Id
     private Long id;
 
     private String outTradeNo;
