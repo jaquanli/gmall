@@ -24,6 +24,6 @@
 /nbdist/
 /.nb-gradle/
 /mvnw.cmd
+/gmall-user-web.iml
 /mvnw
-/gmall-order-service.iml
 /.mvn/

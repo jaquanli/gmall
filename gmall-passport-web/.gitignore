@@ -23,3 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+/mvnw.cmd
+/mvnw
+/gmall-passport-web.iml
+/.mvn/

@@ -5,7 +5,6 @@
 # IntelliJ project files
 .idea/
 *.iml
-.mvn/
 out
 gen
 gmall-api/src/main/resources/
@@ -13,8 +12,6 @@ gmall-api/src/test/
 gmall-parent/src/
 gmall-service-util/src/test/
 gmall-web-util/src/test/
-mvnw
-mvnw.cmd
 
 ### Java template
 *.class
@@ -98,3 +95,5 @@ buildNumber.properties
 .classpath
 .settings
 .metadata
+/gmall-common-util/gmall-common-util.iml
+/gmall-api/gmall-api.iml
