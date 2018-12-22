@@ -50,7 +50,7 @@ public class OrderController {
             OrderInfo orderReal =  orderService.creatOrder(userId,orderInfo);
             if (orderReal != null) {
                 //跳转支付页面
-                modelAndView.setViewName("redirect:http://payment.gmall.com:8087/index");
+                modelAndView.setViewName("redirect:http://192.168.2.31:8087/index");
                 //将需要的参数带回
                 modelAndView.addObject("outTradeNo",orderReal.getOutTradeNo());
                 modelAndView.addObject("totalAmount",orderReal.getTotalAmount());

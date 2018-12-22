@@ -12,4 +12,6 @@ public interface OrderService {
     OrderInfo creatOrder(String userId,OrderInfo orderInfo);
 
     OrderInfo getOrderByOutTradeNo(String outTradeNo);
+
+    void updateOrderInfo(OrderInfo orderInfo);
 }

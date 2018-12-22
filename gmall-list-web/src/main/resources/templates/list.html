@@ -206,7 +206,7 @@
                                 <span th:text="'￥'+${#numbers.formatDecimal(skuLsInfo.price,1,2)}">¥5199.00</span>
                             </p>
 
-                                <a href="#" title=""   th:onclick="'javascript:item(\''+${skuLsInfo.id}+'\')'" class="tab_JE" th:utext="${skuLsInfo.skuName}" >
+                                <a th:onclick="'javascript:item(\''+${skuLsInfo.id}+'\')'" class="tab_JE" th:utext="${skuLsInfo.skuName}" >
                                     Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机
                                 </a>
                         </div>
@@ -295,7 +295,7 @@
 <script language="JavaScript">
     function item(skuid) {
         console.log("skuid:"+skuid);
-        window.location.href="http://item.gmall.com:8082/"+skuid+".html";
+        window.location.href="http://192.168.2.31:8082/"+skuid+".html";
     }
 
     function searchList(){

@@ -10,7 +10,8 @@ import com.atguigu.gmall.bean.OrderDetail;
 import com.atguigu.gmall.bean.OrderInfo;
 import com.atguigu.gmall.bean.PaymentInfo;
 import com.atguigu.gmall.bean.enums.PaymentStatus;
-import com.atguigu.gmall.payment.confs.AlipayConfig;
+import com.atguigu.gmall.confs.AlipayConfig;
+import com.atguigu.gmall.consts.MessageConst;
 import com.atguigu.gmall.service.OrderService;
 import com.atguigu.gmall.service.PaymentService;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,7 @@ public class PaymentController {
     public PaymentController(AlipayClient alipayClient) {
         this.alipayClient = alipayClient;
     }
+
 
     @LoginInterceptCondition
     @RequestMapping("index")
@@ -113,10 +115,10 @@ public class PaymentController {
         //计算几件商品
         Integer totalNum = 0;
         for (OrderDetail orderDetail : orderDetailList) {
-            totalNum +=Integer.parseInt(orderDetail.getSkuNum());
+            totalNum += Integer.parseInt(orderDetail.getSkuNum());
         }
         //标题
-        model.setSubject(skuSubject+ "等" +totalNum + "件商品。");
+        model.setSubject(skuSubject + "等" + totalNum + "件商品。");
         //aliPayReturnParam.put("subject",orderInfo.getOrderDetailList().get(0).getSkuName());
         //将业务参数传入
         aliPayRequest.setBizModel(model);
@@ -129,7 +131,7 @@ public class PaymentController {
             responseBody = alipayClient.pageExecute(aliPayRequest).getBody();
 
             //获取支付信息
-            PaymentInfo paymentInfoDB = paymentService.getPaymentInfoBy(outTradeNo);
+            PaymentInfo paymentInfoDB = paymentService.getPaymentInfoByOutTradeNo(outTradeNo);
             //幂等性检查，只有支付信息不存在的时候创建支付信息
             if (paymentInfoDB == null) {
 
@@ -153,8 +155,13 @@ public class PaymentController {
                 paymentInfo.setCreateTime(new Date());
                 //创建
                 paymentService.addPaymentInfo(paymentInfo);
-
             }
+
+            //在这里要发送延迟队列的定时任务
+            int delaySec = 40;//每次检查延迟的秒数
+            int checkCount = 3;//检查次数
+            paymentService.sendDelayPaymentResultMessage(outTradeNo, delaySec, checkCount);
+
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
@@ -167,53 +174,31 @@ public class PaymentController {
 
         //支付完成后还要完成一系列操作，比如订单状态的修改，库存系统收到消息，支付状态的修改等等。。。
         //保存支付信息
-        /*charset=utf-8
-        &out_trade_no=ATGUIGUGMALL1545026735444201812171405351
-        &method=alipay.trade.page.pay.return
-        &total_amount=0.01
-        &sign=LQvXIcxMAUMw4ogLs68m4UVQb5IsyNcmNUAmVPGJjgMcLhBkZrcw%2FxxdOpaOHB5k7yeGrv5fPfZ67v%2FdXbwPpwRE4vGTBpxYq2hMXvNgRJ7hz3phRMQxQVH8uCKc2c2%2BzXWMyHqq8K8DJNLqYGhxa1hwfMraAKiyBuxIB1ygka5jHA6pTFO9diclMfcGeHbGFggX8jUJNSNOKtLADueGLgnob6OJWLANa6x1mh9OpHLzGkRculM%2BmpUa0m1Q%2FCgu6gVt2lCg2dJk%2FchoijAKQlK5ywLybJYBieA8%2BrsEn8GBuh8jCn%2FWVEP4ehtlh2bLhCRqaa7VA6fuHUDy3mNrjA%3D%3D
-        &trade_no=2018121722001403230560445997
-        &auth_app_id=2018020102122556
-        &version=1.0
-        &app_id=2018020102122556
-        &sign_type=RSA2
-        &seller_id=2088921750292524
-        &timestamp=2018-12-17+14%3A07%3A19
-          */
-
-
         String out_trade_no = request.getParameter("out_trade_no");
         String total_amount = request.getParameter("total_amount");
         String trade_no = request.getParameter("trade_no");
         String sign = request.getParameter("sign");
         if (StringUtils.isNotBlank(out_trade_no)) {
-            //获取支付信息
-            PaymentInfo paymentInfoDB = paymentService.getPaymentInfoBy(out_trade_no);
-            //幂等性检查
-            if (paymentInfoDB != null && !(PaymentStatus.PAID.getName().equals(paymentInfoDB.getPaymentStatus()))) {
-                if ((PaymentStatus.UNPAID.getName().equals(paymentInfoDB.getPaymentStatus()))) {
-                    //这里应该校验支付宝是否收到到账消息，如果收到到账消息，进行更新，如果没有，则进行重新发送请求
-                    PaymentInfo paymentInfo = new PaymentInfo();
-                    paymentInfo.setAlipayTradeNo(trade_no);
-                    paymentInfo.setCallbackTime(new Date());
-                    paymentInfo.setCallbackContent(request.getQueryString());
-                    paymentInfo.setPaymentStatus(PaymentStatus.PAID.getName());
-                    paymentInfo.setOutTradeNo(out_trade_no);
-                    //更新
-                    paymentService.updatePaymentInfo(paymentInfo);
 
-                    //当查到没有到账就继续进行支付，在此发起支付请求
-//                request.setAttribute("out_trade_no",out_trade_no);
-//                request.setAttribute("total_amount",total_amount);
-//                return aliPaySubmit(request);
-                } else {
-                    return "filed";
+            //获取支付信息
+            PaymentInfo paymentInfoDB = paymentService.getPaymentInfoByOutTradeNo(out_trade_no);
+            //幂等性检查，并更新
+            if (paymentInfoDB != null) {
+                paymentInfoDB.setAlipayTradeNo(trade_no);
+                paymentInfoDB.setCallbackTime(new Date());
+                paymentInfoDB.setCallbackContent(request.getQueryString());
+                //检查并更新
+                PaymentInfo paymentInfo = paymentService.checkPaymentState(paymentInfoDB);
+                //这里应该校验支付宝是否收到到账消息，如果收到到账消息，进行更新，如果没有，则进行重新发送请求
+                if (PaymentStatus.PAID.getName().equals(paymentInfo.getPaymentStatus())){
+                    //发送订单支付结果的消息,并通过orderService接收消息，处理订单
+                    String paymentResult = MessageConst.MESSAGE_SUCCESS;
+                    paymentService.sendPaymentResultMessage(paymentInfo, paymentResult);
                 }
             }
         } else {
             return "filed";
         }
-
         return "finish";
     }
 

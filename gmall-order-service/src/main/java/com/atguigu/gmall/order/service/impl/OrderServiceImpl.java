@@ -6,12 +6,12 @@ import com.atguigu.gmall.bean.CartInfo;
 import com.atguigu.gmall.bean.OrderDetail;
 import com.atguigu.gmall.bean.OrderInfo;
 import com.atguigu.gmall.bean.enums.OrderStatus;
-import com.atguigu.gmall.bean.enums.PaymentStatus;
 import com.atguigu.gmall.bean.enums.PaymentWay;
 import com.atguigu.gmall.bean.enums.ProcessStatus;
 import com.atguigu.gmall.consts.WebConst;
 import com.atguigu.gmall.order.mapper.OrderDetailMapper;
 import com.atguigu.gmall.order.mapper.OrderInfoMapper;
+import com.atguigu.gmall.order.message.ProducerOrderMessage;
 import com.atguigu.gmall.service.CartService;
 import com.atguigu.gmall.service.OrderService;
 import com.atguigu.gmall.utils.RedisUtil;
@@ -19,13 +19,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 import tk.mybatis.mapper.entity.Example;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -43,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+
+    @Autowired
+    private ProducerOrderMessage producerOrderMessage;
 
     @Override
     public OrderInfo creatCheckOrderInfo(String userId) {
@@ -210,8 +211,9 @@ public class OrderServiceImpl implements OrderService {
             Long orderId = saveOrder(orderReal);
             //保存无问题后进行删除购物车数据
             if (orderId != null) {
-                //删除数据库选中的
-                cartService.removeCheckedCart(userId, checkedCartIdList);
+                //发送删除数据库选中的购物车的数据的消息
+                producerOrderMessage.sendRemoveCheckedCartMessage(userId,checkedCartIdList);
+                //cartService.removeCheckedCart(userId, checkedCartIdList);
                 //将orderId返回
                 orderReal.setId(orderId);
             }
@@ -259,7 +261,7 @@ public class OrderServiceImpl implements OrderService {
 
 
         Example example = new Example(OrderDetail.class);
-        example.createCriteria().andEqualTo(orderInfoDB.getId());
+        example.createCriteria().andEqualTo("orderId",orderInfoDB.getId());
         List<OrderDetail> orderDetailList = orderDetailMapper.selectByExample(example);
 
         orderInfoDB.setOrderDetailList(orderDetailList);
@@ -267,5 +269,17 @@ public class OrderServiceImpl implements OrderService {
         return orderInfoDB;
     }
 
+    /**
+     * 更新订单的状态
+     * @param orderInfo 订单信息对象
+     */
+    @Override
+    public void updateOrderInfo(OrderInfo orderInfo) {
 
+        if (orderInfo != null){
+            Example example = new Example(OrderInfo.class);
+            example.createCriteria().andEqualTo("outTradeNo",orderInfo.getOutTradeNo());
+            orderInfoMapper.updateByExampleSelective(orderInfo,example);
+        }
+    }
 }

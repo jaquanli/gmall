@@ -2,9 +2,9 @@ package com.atguigu.gmall.consts;
 
 public interface WebConst {
     //单点登录页面地址
-    String LOGIN_URL = "http://passport.gmall.com:8085/index";
+    String LOGIN_URL = "http://192.168.2.31:8085/index";
     //单点登录验证服务
-    String VERIFY_URL = "http://passport.gmall.com:8085/verify";
+    String VERIFY_URL = "http://192.168.2.31:8085/verify";
     //JWT加密解密企业秘钥
     String BUSINESS_KEY = "AT_GUI_GU";
     //redis存储user信息的超时时间7天

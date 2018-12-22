@@ -72,6 +72,13 @@
             <artifactId>spring-boot-starter-dubbo</artifactId>
         </dependency>
 
+        <!--添加AliPay支付接口依赖-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
 
     </dependencies>
 

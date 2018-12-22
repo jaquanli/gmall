@@ -1,12 +1,12 @@
 package com.atguigu.gmall.passport.controller;
 
+
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSON;
-import com.atguigu.gmall.bean.CartInfo;
 import com.atguigu.gmall.bean.ResultEntity;
 import com.atguigu.gmall.bean.UserInfo;
 import com.atguigu.gmall.consts.WebConst;
 import com.atguigu.gmall.service.CartService;
+import com.atguigu.gmall.service.PassportService;
 import com.atguigu.gmall.service.UserService;
 import com.atguigu.gmall.utils.CookieUtil;
 import com.atguigu.gmall.utils.JwtUtil;
@@ -18,7 +18,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -32,6 +31,9 @@ public class PassportController {
 
     @Reference
     private CartService cartService;
+
+    @Reference
+    private PassportService passportService;
 
     @RequestMapping("index")
     public String doLogin(@RequestParam("originUrl") String originUrl, ModelMap modelMap) {
@@ -71,20 +73,28 @@ public class PassportController {
              * 购物车合并
              * 这里暂时采取折中的办法，以后使用消息队列MQ彻底解决购物车合并问题
              */
+
+
             //这里是登录成功，取出购物车的cookie信息
             String cartCookieValue = CookieUtil.getCookieValue(request, WebConst.CART_COOKIE_NAME, true);
             if (StringUtils.isNotBlank(cartCookieValue)){
+                Long userId = userInfo.getId();
+                //发送合并购物车的消息
+                passportService.sendMergeCartMessage(userId,cartCookieValue);
 
-                Boolean mergeFlag = cartService.mergeCart(userInfo.getId(), JSON.parseArray(cartCookieValue, CartInfo.class));
-                if (mergeFlag){
+                //删除cookie中的数据
+                CookieUtil.deleteCookie(request,response,WebConst.CART_COOKIE_NAME);
+
+                //Boolean mergeFlag = cartService.mergeCart(userInfo.getId(), JSON.parseArray(cartCookieValue, CartInfo.class));
+                //if (mergeFlag){
                     //实现合并成功cookie后删除cookie中的数据
-                    CookieUtil.deleteCookie(request,response,WebConst.CART_COOKIE_NAME);
-                }
+                   // CookieUtil.deleteCookie(request,response,WebConst.CART_COOKIE_NAME);
+               // }
             }else {
-                //就刷新缓存
-                cartService.flushCacheFormCartInfo(userInfo.getId());
+                //刷新缓存的发送消息
+                passportService.sendFlushCacheFormCartInfoMessage(userInfo.getId());
+                //cartService.flushCacheFormCartInfo(userInfo.getId());
             }
-
 
         } else {
             //返回失败的消息
